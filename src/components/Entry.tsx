@@ -4,7 +4,7 @@ import { EntryFieldPanel } from "./EntryFieldPanel";
 import { EntryButtonPanel } from "./EntryButtonPanel";
 
 interface Props {};
-interface State { NameState: '', DateState: ''};
+interface State { editMode: boolean};
 
 export class Entry extends React.Component <Props,State> {
     constructor(props) {

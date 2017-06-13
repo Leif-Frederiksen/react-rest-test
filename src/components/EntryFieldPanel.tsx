@@ -1,7 +1,7 @@
 import * as React from "react";
 
 interface Props {  };
-interface State {};
+interface State { editMode: boolean };
 
 import { EntryField } from "./EntryField";
 

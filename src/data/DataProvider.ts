@@ -1,8 +1,5 @@
 
 import "isomorphic-fetch";
-
-// import { SPHttpClient, SPHttpClientResponse,  } from 'sp-http';
-
 import "babel-polyfill"; // To make "promise" available on IE
 
 interface IListItem {
@@ -10,29 +7,67 @@ interface IListItem {
     Title: String;
 }
 
-export function
+export function getListItems() {
+    let url = "https://metroselskabetis.sharepoint.com/sites/leftest/_api/web/lists/GetByTitle('RESTlist')/items";
 
-    getListItems() {
-        let url = "https://metroselskabetis.sharepoint.com/sites/leftest/_api/web/lists/GetByTitle('RESTlist')/items";
-        // let url = "https://devportal.metroselskabet.dk/LEF/_api/web/lists/GetByTitle('importedSR')/items";
+    console.log("URL: " + url);
 
-        console.log("URL: " + url);
+    let header = new Headers();
+    header.append ("accept","application/json;odata=verbose");
+    return fetch(url, {
+                credentials: 'include'  ,
+                headers: header
+                })
+                    .then((response) => { return response.json() } )
+                    .then((responseJson) => {
 
-        let header = new Headers();
-        header.append ("accept","application/json;odata=verbose");
-        return fetch(url, {
-                    credentials: 'include'  ,
-                    headers: header
+                        console.log("Result: " + responseJson.d.results);
+            
+                        
+                        return responseJson.d.results;
                     })
-                        .then((response) => { return response.json() } )
-                        .then((responseJson) => {
+                    .catch((error) => {
+                        console.error(error);
+                    });
+}
 
-                            console.log("Result: " + responseJson.d.results);
-                
-                            
-                            return responseJson.d.results;
-                        })
-                        .catch((error) => {
-                            console.error(error);
-                        });
-    }
+export function saveItem(listName:string, item:IListItem) {
+    let url = "https://metroselskabetis.sharepoint.com/sites/leftest/_api/web/lists/GetByTitle('RESTlist')/items(" + item.Id + ")";
+
+    console.log("URL: " + url);
+    let header = new Headers();
+    header.append("ACCEPT","application/json;odata=verbose");
+    header.append("X-RequestDigest",getRequestDigest());
+    header.append("X-HTTP-Method", "Merge");
+    header.append("If-Match","*");
+    header.append("content-type", "application/json;odata=verbose");
+
+    console.log("RD:" + getRequestDigest());
+
+    item.Title += "X";
+
+    let updateItem = {
+    "__metadata": { "type": /* "SP.Data.RESTlistListItem" */ getListItemType(listName)  },
+                    "Title": item.Title += "-X" //updated title" //change as necessary, just for test purposes
+                    };
+
+
+    return fetch(url, {
+                credentials: 'include'  ,
+                method: "MERGE",
+                headers: header,
+                // body: metadata,
+                body: JSON.stringify(updateItem)
+    }).then((response) =>  {
+        console.log("Response from saveItem: " + response);
+     }) 
+}
+
+function getListItemType(name) {
+    return "SP.Data." + name[0].toUpperCase() + name.substring(1) + "ListItem";
+}
+
+function getRequestDigest():string {
+    let element:any = document.getElementById("__REQUESTDIGEST");
+    return element ? element.value : "fake-digest";
+}
