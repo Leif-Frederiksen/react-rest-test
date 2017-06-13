@@ -9,7 +9,7 @@ interface State {};
 export class Container extends React.Component<Props,State> {
     render() {
             return (<div style= {{ borderColor: "green", borderStyle: "solid" }} > 
-                    Container v1.2
+                    Container v1.3
                     
                         <Entry/>
                         <List  />
