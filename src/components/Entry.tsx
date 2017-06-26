@@ -1,14 +1,17 @@
 import * as React from "react";
 
+import PropTypes from 'prop-types';
+
 import { Item } from './Item';
 
-import { createItem, IListItem }  from '../data/DataProvider';
+import { IDataProvider }  from '../data/IDataProvider';
+import { IListItem }  from '../data/IListItem';
 
 import { EntryFieldPanel } from "./EntryFieldPanel";
 import { EntryButtonPanel } from "./EntryButtonPanel";
 
-interface Props {};
-interface State { editMode: boolean};
+interface Props { DataProvider: any};
+interface State { editMode: boolean, titleFieldValue: PropTypes.String};
 
 export class Entry extends React.Component <Props,State> {
     constructor(props) {
@@ -20,19 +23,15 @@ export class Entry extends React.Component <Props,State> {
         e.preventDefault();
 
         let item:IListItem = { Title:"something new", Id:null};
-        createItem("RESTlist",item).then(object => {
+        this.props.DataProvider.createItem("RESTlist",item).then(object => {
             console.log("New object: " + object);
-            
-            let newItem: IListItem = { Id : object.Id, Title: object.Title};
-
-            
         });
     }
 
     render() {
         return (<div style= {{ borderColor: "red", borderStyle: "solid" }} > 
                     <EntryFieldPanel />
-                    <EntryButtonPanel clickHandler={this.onSubmit} />
+                    <EntryButtonPanel clickHandler={this.onSubmit.bind(this)} />
         
         </div>);
     }

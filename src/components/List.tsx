@@ -3,9 +3,9 @@ import * as React from "react";
 import { HeaderPanel } from "./HeaderPanel";
 import { Items } from "./Items";
 
-import { getListItems }  from '../data/DataProvider';
+import { IDataProvider }  from '../data/IDataProvider';
 
-interface Props { };
+interface Props { DataProvider: any};
 interface State {Items: Array<any> };
 
 export class List extends React.Component <Props,State> {
@@ -20,14 +20,15 @@ export class List extends React.Component <Props,State> {
         return (<div style= {{ borderColor: "orange", borderStyle: "solid" }} >
 
             <HeaderPanel />
-            <Items Items={this.state.Items} />
+            <Items {...this.props} Items={this.state.Items} />
          
           </div>);
     }
-
+    
     componentDidMount() {
-        getListItems().then((data) => {
+        this.props.DataProvider.getListItems().then((data) => {
             console.log("Got it" + data);
+            // debugger;
             
             this.setState({Items: data});
         })

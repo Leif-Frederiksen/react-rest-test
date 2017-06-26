@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { Item } from './Item';
 
-interface Props { Items: Array<any>  };
+interface Props { Items: Array<any>, DataProvider:any  };
 interface State { };
 
 export class Items extends React.Component <Props,State> {
@@ -13,7 +13,7 @@ export class Items extends React.Component <Props,State> {
                     { this.props.Items.map((item, index) => { 
                                 return (
                                         <li key={index /* item.Id */ } >
-                                            <Item Item={item} />
+                                            <Item {...this.props} Item={item} />
                                         </li>
                                     )
                     })

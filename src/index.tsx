@@ -5,17 +5,16 @@ import { Hello } from "./components/Hello";
 import { Container } from "./components/Container";
 import { Entry } from "./components/Entry";
 
-// var ITEMS = [
-//     { Id: 1, Name: "Leif", Date: "kjjlkjl"},
-//     { Id: 2, Name: "Ole", Date: "kjjlkjl"},
-//     { Id: 3, Name: "Bent", Date: "kjjlkjl"},
-//     { Id: 4, Name: "Keld", Date: "kjjlkjl"},
-//     { Id: 5, Name: "Yrsa", Date: "today" },
-//     { Id: 6, Name: "Bente", Date: "today" }
-// ]
+import { SPListDataProvider }  from './data/SPListDataProvider';
+import { MockListDataProvider }  from './data/MockListDataProvider';
+import { IListItem }  from './data/IListItem';
+import { IDataProvider }  from './data/IDataProvider';
+
+// let dataProvider:IDataProvider = new SPListDataProvider('RESTlist');
+let dataProvider:IDataProvider = new MockListDataProvider('RESTlist');
 
 ReactDOM.render(
-    <Container />,
+    <Container DataProvider={dataProvider}/>,
     document.getElementById("example")
 );
 

@@ -1,10 +1,10 @@
 import * as React from "react";
 
-import { saveItem }  from '../data/DataProvider';
+// import { saveItem }  from '../data/DataProvider';
 
 import { ItemButton } from './ItemButton';
 
-interface Props { Item: any, EditMode: boolean, editStateHandler: any };
+interface Props { Item: any, EditMode: boolean, editStateHandler: any, DataProvider:any };
 interface State { /* EditModeState: boolean */ };
 
 export class ItemButtonPanel extends React.Component<Props, State> {
@@ -20,7 +20,7 @@ export class ItemButtonPanel extends React.Component<Props, State> {
     onEditOk(e: any) {
         this.props.editStateHandler(false);
         console.log("onEditOk in ItemButtonPanel: " + this.props.Item.Title);
-        saveItem("RESTlist",this.props.Item);
+        this.props.DataProvider.saveItem("RESTlist",this.props.Item);
         e.preventDefault();
     }
     onEditCancel(e: any) {
