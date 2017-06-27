@@ -26,14 +26,11 @@ export class SPListDataProvider implements IDataProvider {
             credentials: 'include',
             headers: header
         })
-            .then((response) => { return response.json() })
+            .then((response) => {
+                return response.json()
+            })
             .then((responseJson) => {
-
-                console.log("Result: " + responseJson.d.results);
-
-let list = new Array<IListItem>();
-return list;
-                // return responseJson.d.results;
+                return responseJson.d.results;
             })
             .catch((error) => {
                 console.error(error);
@@ -51,20 +48,15 @@ return list;
         header.append("If-Match", "*");
         header.append("content-type", "application/json;odata=verbose");
 
-        console.log("RD:" + this.getRequestDigest());
-
-        item.Title += "X";
-
         let updateItem = {
             "__metadata": { "type": this.getListItemType(listName) },
-            "Title": item.Title += "-X" //updated title" //change as necessary, just for test purposes
+            "Title": item.Title
         };
 
         return fetch(url, {
             credentials: 'include',
             method: "POST",
             headers: header,
-            // body: metadata,
             body: JSON.stringify(updateItem)
         })
             .then((response) => {

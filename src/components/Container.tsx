@@ -3,7 +3,7 @@ import * as React from "react";
 import { Entry } from "./Entry";
 import { List } from "./List";
 
-interface Props { DataProvider:any };
+interface Props { DataProvider:any, entryFields:Array<any> };
 interface State {};
 
 export class Container extends React.Component<Props,State> {

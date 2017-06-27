@@ -1,5 +1,6 @@
 import * as React from "react";
 
+
 import { EntryButton } from "./EntryButton";
 
 interface Props { clickHandler: any };
