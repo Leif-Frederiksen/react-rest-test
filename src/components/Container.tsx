@@ -4,16 +4,22 @@ import { Entry } from "./Entry";
 import { List } from "./List";
 
 interface Props { DataProvider:any, entryFields:Array<any> };
-interface State {};
+interface State { Items:Array<any> };
 
 export class Container extends React.Component<Props,State> {
     render() {
             return (<div style= {{ borderColor: "green", borderStyle: "solid" }} > 
-                    Container v1.3
+                    Container v2.0
                     
                         <Entry {...this.props} />
-                        <List  {...this.props} />
+                        <List  {...this.props} Items={this.state.Items} />
                     </div>);
     }
 
+    componentWillMount() {
+        this.setState( {Items: new Array<any>() });
+        this.props.DataProvider.getListItems().then((data) => {
+            this.setState({Items: data});
+        })
+    }
 }
