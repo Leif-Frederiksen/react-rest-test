@@ -17,7 +17,7 @@ let dataProvider:IDataProvider = new MockListDataProvider('RESTlist');
 let entryFields = new Array<EntryFieldType>();
 
 entryFields.push(new EntryFieldType("Title","Enter title..."));
-// entryFields.push(new EntryFieldType("Date","Enter date..."));
+entryFields.push(new EntryFieldType("ExtraField","Enter some other stuff..."));
 
 ReactDOM.render(
     <Container DataProvider={dataProvider} entryFields={entryFields} />,

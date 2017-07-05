@@ -3,7 +3,7 @@ import * as React from "react";
 
 import { EntryButton } from "./EntryButton";
 
-interface Props { clickHandler: any };
+interface Props { clickHandler: any, enabled:boolean };
 interface State {};
 
 export class EntryButtonPanel extends React.Component <Props,State> {

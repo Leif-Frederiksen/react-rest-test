@@ -7,10 +7,9 @@ import { IDataProvider } from "./IDataProvider";
 
 
 export class SPListDataProvider implements IDataProvider {
-
     listName:string;
 
-    constructor(listName) {
+    constructor(listName:string) {
         this.listName = listName;
     }
     itemList:Array<IListItem>;
@@ -37,7 +36,7 @@ export class SPListDataProvider implements IDataProvider {
             });
     }
 
-    createItem(listName: string, item: IListItem) {
+    createItem(item: IListItem) {
         let url = "https://metroselskabetis.sharepoint.com/sites/leftest/_api/web/lists/GetByTitle('" + this.listName + "')/items";
 
         console.log("URL: " + url);
@@ -49,8 +48,9 @@ export class SPListDataProvider implements IDataProvider {
         header.append("content-type", "application/json;odata=verbose");
 
         let updateItem = {
-            "__metadata": { "type": this.getListItemType(listName) },
-            "Title": item.Title
+            "__metadata": { "type": this.getListItemType(this.listName) },
+            "Title": item.Title,
+            "ExtraField": item.ExtraField,
         };
 
         return fetch(url, {
@@ -70,7 +70,32 @@ export class SPListDataProvider implements IDataProvider {
             });
     }
 
-    saveItem(listName: string, item: IListItem) {
+    deleteItem(item: IListItem) {
+        let url = "https://metroselskabetis.sharepoint.com/sites/leftest/_api/web/lists/GetByTitle('" + this.listName + "')/items(" + item.Id + ")";
+
+        console.log("URL: " + url);
+        let header = new Headers();
+        header.append("ACCEPT", "application/json;odata=verbose");
+        header.append("X-RequestDigest", this.getRequestDigest());
+        header.append("X-HTTP-Method", "DELETE");
+        header.append("If-Match", "*");
+        header.append("content-type", "application/json;odata=verbose");
+
+        return fetch(url, {
+            credentials: 'include',
+            method: "DELETE",
+            headers: header
+        })
+            .then((response) => {
+                return item;
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+
+    }
+
+    saveItem(item: IListItem) {
         let url = "https://metroselskabetis.sharepoint.com/sites/leftest/_api/web/lists/GetByTitle('" + this.listName + "')/items(" + item.Id + ")";
 
         console.log("URL: " + url);
@@ -81,13 +106,9 @@ export class SPListDataProvider implements IDataProvider {
         header.append("If-Match", "*");
         header.append("content-type", "application/json;odata=verbose");
 
-        console.log("RD:" + this.getRequestDigest());
-
-        item.Title += "X";
-
         let updateItem = {
-            "__metadata": { "type": this.getListItemType(listName) },
-            "Title": item.Title += "-X" //updated title" //change as necessary, just for test purposes
+            "__metadata": { "type": this.getListItemType(this.listName) },
+            "Title": item.Title
         };
 
         return fetch(url, {
@@ -97,10 +118,7 @@ export class SPListDataProvider implements IDataProvider {
             body: JSON.stringify(updateItem)
         })
             .then((response) => {
-                return response.json()
-            })
-            .then((responseJson) => {
-                return responseJson.d;
+                return item;
             })
             .catch((error) => {
                 console.error(error);

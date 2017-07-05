@@ -11,8 +11,8 @@ import { EntryFieldPanel } from "./EntryFieldPanel";
 import { EntryButtonPanel } from "./EntryButtonPanel";
 import { EntryFieldType } from "./EntryFieldType";
 
-interface Props { DataProvider: any, entryFields: Array<any>};
-interface State { editMode: boolean, fieldValues: FieldValues};
+interface Props { DataProvider: any, entryFields: Array<any>, addItemToListHandler:any};
+interface State { enabled: boolean, fieldValues: FieldValues};
 
 export class FieldValue {
     fieldName: String;
@@ -30,6 +30,7 @@ export class FieldValues {
     constructor(entryFields:Array<EntryFieldType>) {
 
         this.fieldValues= new Array<FieldValue>();
+
         for (let entryField of entryFields) {
             this.fieldValues.push(new FieldValue(entryField.name,""));
         }
@@ -69,22 +70,27 @@ export class Entry extends React.Component <Props,State> {
             item[field.name] = this.fieldValues.getFieldValue(field.name);
         }
 
-        this.props.DataProvider.createItem("RESTlist",item).then(object => {
-            console.log("New object: " + object);
+        this.setState({"enabled":false});
+        this.props.DataProvider.createItem(item).then(object => {
+            item["Id"] = object.Id;
+            this.props.addItemToListHandler(item);
+            this.setState({"enabled":true});
         });
     }
 
     handleFieldChange(fieldName:String, value:any) {
-        console.log("Entry.tsx handleFieldChange. fieldName: " + fieldName + " value: " + value);
         this.fieldValues.setFieldValue(fieldName,value);
     }
     
     render() {
         return (<div style= {{ borderColor: "red", borderStyle: "solid" }} > 
-                    <EntryFieldPanel changeHandler={this.handleFieldChange.bind(this)} entryFields={this.props.entryFields}/>
-                    <EntryButtonPanel clickHandler={this.onSubmit.bind(this)} />
+                    <EntryFieldPanel enabled={this.state.enabled} changeHandler={this.handleFieldChange.bind(this)} entryFields={this.props.entryFields}/>
+                    <EntryButtonPanel enabled={this.state.enabled} clickHandler={this.onSubmit.bind(this)} />
         
         </div>);
     }
 
+    componentWillMount() {
+        this.setState({ "enabled" : true });
+    }
 }

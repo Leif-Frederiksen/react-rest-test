@@ -16,7 +16,7 @@ export class MockListDataProvider implements IDataProvider {
         this.listName = listName;
 
         this.items = new Array<IListItem>();
-        this.items.push(new MockListItem("1","Ole"));
+        this.items.push(new MockListItem("1","Ole","OleExtra"));
         this.items.push(new MockListItem("2","Bent"));
         this.items.push(new MockListItem("3","Kirsten"));
     }
@@ -32,23 +32,32 @@ export class MockListDataProvider implements IDataProvider {
             });
     }
 
-    createItem(listName: string, item: IListItem) {
+    deleteItem(item: IListItem) {
         return fetch("src/data/MockListData.json")
             .then((response) => { 
-                this.items.push(item);
-                return this.items;
+                console.log("Delete from server: " + item.Id);
+                return item;
             })
             .catch((error) => {
                 console.error(error);
             });
-
     }
 
-    saveItem(listName: string, item: IListItem) {
+    createItem(item: IListItem) {
         return fetch("src/data/MockListData.json")
             .then((response) => { 
-                item.Title += "Y";
-                return this.items;
+                item["Id"] = new Date().getTime().toString();
+                return item;
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }
+
+    saveItem(item: IListItem) {
+        return fetch("src/data/MockListData.json")
+            .then((response) => { 
+                return item;
             })
             .catch((error) => {
                 console.error(error);

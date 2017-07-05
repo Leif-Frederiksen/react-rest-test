@@ -3,7 +3,7 @@ import * as React from "react";
 import PropTypes from 'prop-types';
 
 
-interface Props { FieldName: PropTypes.String.isRequired, changeHandler:any, PlaceHolder?: PropTypes.String };
+interface Props { FieldName: PropTypes.String.isRequired, changeHandler:any, PlaceHolder?: PropTypes.String, enabled:boolean };
 interface State {  };
 
 export class EntryField extends React.Component<Props, State> {
@@ -17,7 +17,7 @@ export class EntryField extends React.Component<Props, State> {
     render() {
         let ph = "Olebole"
         return (<div>
-            <input type="text" placeholder={this.props.PlaceHolder} onChange={evt => this.updateInputValue(evt)}/>
+            <input type="text"  disabled={!this.props.enabled} placeholder={this.props.PlaceHolder} onChange={evt => this.updateInputValue(evt)}/>
         </div>
         );
     }
