@@ -15,7 +15,7 @@ export class SPListDataProvider implements IDataProvider {
     itemList:Array<IListItem>;
 
     getListItems() {
-        let url = "https://metroselskabetis.sharepoint.com/sites/leftest/_api/web/lists/GetByTitle('" + this.listName + "')/items";
+        let url = "https://mthportal.sharepoint.com/sites/sandbox/sp/LFR/test01/_api/web/lists/GetByTitle('" + this.listName + "')/items";
 
         console.log("URL: " + url);
 
@@ -37,7 +37,7 @@ export class SPListDataProvider implements IDataProvider {
     }
 
     createItem(item: IListItem) {
-        let url = "https://metroselskabetis.sharepoint.com/sites/leftest/_api/web/lists/GetByTitle('" + this.listName + "')/items";
+        let url = "https://mthportal.sharepoint.com/sites/sandbox/sp/LFR/test01/_api/web/lists/GetByTitle('" + this.listName + "')/items";
 
         console.log("URL: " + url);
         let header = new Headers();
@@ -71,7 +71,7 @@ export class SPListDataProvider implements IDataProvider {
     }
 
     deleteItem(item: IListItem) {
-        let url = "https://metroselskabetis.sharepoint.com/sites/leftest/_api/web/lists/GetByTitle('" + this.listName + "')/items(" + item.Id + ")";
+        let url = "https://mthportal.sharepoint.com/sites/sandbox/sp/LFR/test01/_api/web/lists/GetByTitle('" + this.listName + "')/items(" + item.Id + ")";
 
         console.log("URL: " + url);
         let header = new Headers();
@@ -96,7 +96,7 @@ export class SPListDataProvider implements IDataProvider {
     }
 
     saveItem(item: IListItem) {
-        let url = "https://metroselskabetis.sharepoint.com/sites/leftest/_api/web/lists/GetByTitle('" + this.listName + "')/items(" + item.Id + ")";
+        let url = "https://mthportal.sharepoint.com/sites/sandbox/sp/LFR/test01/_api/web/lists/GetByTitle('" + this.listName + "')/items(" + item.Id + ")";
 
         console.log("URL: " + url);
         let header = new Headers();

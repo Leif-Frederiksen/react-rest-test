@@ -26,9 +26,6 @@ export class MockListDataProvider implements IDataProvider {
             .then((response) => { 
 
                 return this.items;
-            })
-            .catch((error) => {
-                console.error(error);
             });
     }
 
